@@ -3,6 +3,10 @@ name = "petgraph-evcxr"
 version = "0.1.0"
 authors = ["Timothy Hobbs"]
 edition = "2018"
+license-file = "COPYING.LGPL"
+description = "Draw petgraph graphs in jupyter notebook using the evcxr engine"
+homepage = "https://github.com/timthelion/petgraph-evcxr"
+repository = "https://github.com/timthelion/petgraph-evcxr"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

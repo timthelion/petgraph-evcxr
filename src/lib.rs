@@ -1,3 +1,4 @@
+//! Used for displaying petgraph graphs in jupyter using the evcxr rust engine.
 extern crate petgraph;
 use std::fmt::{self, Display};
 use std::io::{self, Write};
@@ -10,6 +11,16 @@ use crate::petgraph::visit::{EdgeRef, IntoEdgeReferences, IntoNodeReferences, No
 use petgraph::dot::Dot;
 use petgraph::graph::Graph;
 
+/// Draw the contents of a dot file.
+/// ```rust
+/// # use petgraph_evcxr::draw_dot;
+/// let dot = "digraph {\
+/// 0 [label=\"a\"]\
+/// 1 [label=\"b\"]\
+/// 0 -> 1 [label=\"a → b\"]\
+/// }";
+/// draw_dot(dot);
+/// ```
 pub fn draw_dot<D>(dot: D)
 where
     D: fmt::Display,
@@ -33,6 +44,18 @@ where
     println!("EVCXR_END_CONTENT");
 }
 
+/// Draw a petgraph graph
+/// ```rust
+/// # extern crate petgraph;
+/// # use petgraph::graph::Graph;
+/// # use petgraph::dot::Dot;
+/// # use petgraph_evcxr::draw_graph;
+/// let mut g : Graph<&str, &str> = Graph::new();
+/// let a = g.add_node("a");
+/// let b = g.add_node("b");
+/// g.add_edge(a, b, "a to b");
+/// draw_graph(&g);
+/// ```
 pub fn draw_graph<G>(g: G)
 where
     G: NodeIndexable + IntoNodeReferences + IntoEdgeReferences,
