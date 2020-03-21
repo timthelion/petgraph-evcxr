@@ -1,15 +1,14 @@
 //! Used for displaying petgraph graphs in jupyter using the evcxr rust engine.
 extern crate petgraph;
-use std::fmt::{self, Display};
-use std::io::{self, Write};
+use std::fmt::{self};
+use std::io::{Write};
 use std::process::{Command, Stdio};
 
 use base64;
 
-use crate::petgraph::visit::{Data, GraphProp, NodeRef};
-use crate::petgraph::visit::{EdgeRef, IntoEdgeReferences, IntoNodeReferences, NodeIndexable};
-use petgraph::dot::Dot;
-use petgraph::graph::Graph;
+use crate::petgraph::visit::{GraphProp};
+use crate::petgraph::visit::{IntoEdgeReferences, IntoNodeReferences, NodeIndexable};
+use petgraph::dot::{Dot, Config};
 
 /// Draw the contents of a dot file.
 /// ```rust
@@ -36,7 +35,8 @@ where
         .stdin
         .as_mut()
         .unwrap()
-        .write_fmt(format_args!("{}", dot));
+        .write_fmt(format_args!("{}", dot))
+        .expect("Writing failed.");
     let output = child
         .wait_with_output()
         .expect("Failed to run dot is graphviz installed?");
@@ -63,5 +63,21 @@ where
     G::NodeWeight: fmt::Display,
     G::EdgeWeight: fmt::Display,
 {
-    draw_dot(Dot::new(&g));
+    draw_dot(Dot::new(g));
+}
+
+
+pub fn draw_graph_with_attr_getters<'a, G>(
+    g: G,
+    config: &'a [Config],
+    get_edge_attributes: &'a dyn Fn(G, G::EdgeRef) -> String,
+    get_node_attributes: &'a dyn Fn(G, G::NodeRef) -> String,
+)
+where
+    G: NodeIndexable + IntoNodeReferences + IntoEdgeReferences,
+    G: GraphProp,
+    G::NodeWeight: fmt::Display,
+    G::EdgeWeight: fmt::Display,
+{
+    draw_dot(Dot::with_attr_getters(g, config, get_edge_attributes, get_node_attributes));
 }
