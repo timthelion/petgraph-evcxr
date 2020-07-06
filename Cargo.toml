@@ -9,8 +9,6 @@ description = "Draw petgraph graphs in jupyter notebook using the evcxr engine"
 homepage = "https://github.com/timthelion/petgraph-evcxr"
 repository = "https://github.com/timthelion/petgraph-evcxr"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 base64 = ">= 0.10.1"
-petgraph = ">= 0.4.13"
+petgraph = ">=0.5.1"
